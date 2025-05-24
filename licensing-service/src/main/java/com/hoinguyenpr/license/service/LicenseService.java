@@ -13,8 +13,8 @@ public class LicenseService {
         license.setLicenseId(licenseId);
         license.setOrganizationId(organizationId);
         license.setDescription("Software product");
-        license.setProductName("Ostock");
-        license.setLicenseId("full");
+        license.setProductName("OStockk");
+        license.setLicenceType("full");
 
         return license;
     }
