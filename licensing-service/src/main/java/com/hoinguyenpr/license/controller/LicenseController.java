@@ -4,7 +4,18 @@ import com.hoinguyenpr.license.model.License;
 import com.hoinguyenpr.license.service.LicenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.Locale;
 
@@ -20,7 +31,20 @@ public class LicenseController {
             @PathVariable("licenseId") String licenseId
     ) {
         License license = licenseService.getLicense(licenseId, organizationId);
-        return  ResponseEntity.ok(license);
+        license.add(
+                linkTo(methodOn(LicenseController.class)
+                        .getLicense(organizationId, license.getLicenseId()))
+                        .withSelfRel(),
+                linkTo(methodOn(LicenseController.class)
+                        .createLicense(organizationId, license, null))
+                        .withRel("createLicense"),
+                linkTo(methodOn(LicenseController.class)
+                        .updateLicense(organizationId, license, null))
+                        .withRel("updateLicense"),
+                linkTo(methodOn(LicenseController.class)
+                        .deleteLicense(organizationId, license.getLicenseId(), null))
+                        .withRel("deleteLicense"));
+        return ResponseEntity.ok(license);
     }
 
     @PutMapping()
