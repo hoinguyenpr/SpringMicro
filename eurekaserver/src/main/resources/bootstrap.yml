@@ -1,0 +1,11 @@
+#Eureka Server get configuration from Configuration Server for boostrap
+spring:
+  application:
+    name: eureka-server
+  config:
+    import: optional:configserver:http://localhost:8071/
+  cloud:
+    #Ribbon is default client-side load balancer. Disable it.
+    loadbalancer:
+      ribbon:
+        enabled: false

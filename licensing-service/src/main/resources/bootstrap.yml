@@ -1,3 +1,4 @@
+#Licensing Server get configuration from Configuration Server for boostrap
 spring:
         application:
                 name: licensing-service
